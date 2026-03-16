@@ -8,7 +8,7 @@ DEP = $(OBJ:.o=.d)
 
 NAME = codexion
 
-OBJ = $(SRC:.c=.o)
+OBJ = $(SRC:.c=.o) 
 
 .PHONY: all re fclean clean
 
