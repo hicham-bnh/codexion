@@ -1,4 +1,4 @@
-SRC = \
+SRC = main.c
 
 CC = cc
 
