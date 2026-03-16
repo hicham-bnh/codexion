@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:15:10 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/03/16 10:18:47 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/03/16 10:34:53 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,15 @@
 # include <stdio.h>
 # include <stdlib.h>
 
+typedef struct s_stock
+{
+	int		number_of_coders;
+	float	time_to_burnout;
+	float	time_to_compile;
+	float	time_to_debug;
+	float	time_to_refactor;
+	int		number_of_compiles_required;
+	char	*scheduler;
+}			t_stock;
 
 #endif
