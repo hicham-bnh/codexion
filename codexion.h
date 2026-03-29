@@ -19,11 +19,12 @@
 typedef struct s_stock
 {
 	int		number_of_coders;
-	float	time_to_burnout;
-	float	time_to_compile;
-	float	time_to_debug;
-	float	time_to_refactor;
+	int		time_to_burnout;
+	int		time_to_compile;
+	int		time_to_debug;
+	int		time_to_refactor;
 	int		number_of_compiles_required;
+	int		dongle_cooldown;
 	char	*scheduler;
 }			t_stock;
 
