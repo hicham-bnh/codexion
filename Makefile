@@ -1,8 +1,8 @@
-SRC = main.c
+SRC = parsing.c
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -I.
+CFLAGS = -Wall -Werror -Wextra -pthread -I.
 
 DEP = $(OBJ:.o=.d)
 

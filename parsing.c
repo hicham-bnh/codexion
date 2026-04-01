@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:29:33 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/01 13:47:35 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/01 14:26:48 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 int	check_parsing(t_stock *test)
 {
-	if  (test->number_of_coders < 0)
+	if  (test->number_of_coders < 1)
     	return (1);
-	else if	(test->time_to_burnout < 0)
+	else if	(test->time_to_burnout < 1)
 	    return (1);
-    else if	(test->time_to_compile < 0)
+    else if	(test->time_to_compile < 1)
     	return (1);
-    else if	(test->time_to_debug < 0)
+    else if	(test->time_to_debug < 1)
         return (1);
-    else if	(test->time_to_refactor < 0)
+    else if	(test->time_to_refactor < 1)
         return (1);
-    else if	(test->number_of_compiles_required < 0)
+    else if	(test->number_of_compiles_required < 1)
         return (1);
-    else if	(test->dongle_cooldown < 0)
+    else if	(test->dongle_cooldown < 1)
         return (1);
     else if	(strcmp(test->scheduler, "fifo") != 0 && strcmp(test->scheduler, "edf") != 0)
         return (1);
@@ -48,18 +48,15 @@ void	parsing_input(t_stock *test, char **str)
 int main(int ac, char **av)
 {
     t_stock test;
+    if (ac != 9)
+    {
+        printf("ERROR");
+        return (0);
+    }
     parsing_input(&test, av);
     if (check_parsing(&test))
     {
         printf("ERROR");
         return (0);
     }
-    printf("%d\n", test.number_of_coders);
-    printf("%d\n", test.time_to_burnout);
-    printf("%d\n", test.time_to_compile);
-    printf("%d\n", test.time_to_debug);
-    printf("%d\n", test.time_to_refactor);
-    printf("%d\n", test.number_of_compiles_required);
-    printf("%d\n", test.dongle_cooldown);
-    printf("%s\n", test.scheduler);
 }
