@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:15:10 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/03/16 10:34:53 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:11:58 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <pthread.h>
 
 typedef struct s_stock
 {
@@ -27,5 +28,7 @@ typedef struct s_stock
 	int		dongle_cooldown;
 	char	*scheduler;
 }			t_stock;
+
+void parsing_input(t_stock *test, char **str);
 
 #endif
