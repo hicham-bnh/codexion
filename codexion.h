@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:15:10 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/01 13:11:58 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:19:03 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <string.h>
 
 typedef struct s_stock
 {

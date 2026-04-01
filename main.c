@@ -6,20 +6,20 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:16:49 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/03/16 10:40:16 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:20:50 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	main(int ac, char **av)
-{
-    // t_stock t_stock;
-	if (ac < 0)
-	{
-		printf("ERROR");
-		return (0);
-	}
-    printf("%s\n", av[1]);
-    printf("%d", atoi(av[2]));
-}
+// int	main(int ac, char **av)
+// {
+//     // t_stock t_stock;
+// 	if (ac < 0)
+// 	{
+// 		printf("ERROR");
+// 		return (0);
+// 	}
+//     printf("%s\n", av[1]);
+//     printf("%d", atoi(av[2]));
+// }
