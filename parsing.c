@@ -6,11 +6,17 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:29:33 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/01 14:26:48 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/01 17:11:24 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+void* compil(void* arg) {
+    (void)arg;
+    printf("is compiling");
+    return NULL;
+}
 
 int	check_parsing(t_stock *test)
 {
@@ -47,12 +53,15 @@ void	parsing_input(t_stock *test, char **str)
 
 int main(int ac, char **av)
 {
-    t_stock test;
     if (ac != 9)
     {
         printf("ERROR");
         return (0);
     }
+    pthread_t test1;
+    int test2 = pthread_create(&test1, NULL, &compil, NULL);
+    printf("%d et %ld\n", test2, test1);
+    t_stock test;
     parsing_input(&test, av);
     if (check_parsing(&test))
     {
