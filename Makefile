@@ -1,4 +1,4 @@
-SRC = parsing.c
+SRC = test.c
 
 CC = cc
 

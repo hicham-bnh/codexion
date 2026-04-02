@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:29:33 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/01 17:11:24 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/02 14:13:21 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,3 +69,5 @@ int main(int ac, char **av)
         return (0);
     }
 }
+
+// valgrind --tools=helgrind ou --tools=drd
