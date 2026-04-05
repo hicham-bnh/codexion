@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:29:33 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/02 14:13:21 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/04 16:56:17 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,6 @@ int main(int ac, char **av)
         printf("ERROR");
         return (0);
     }
-    pthread_t test1;
-    int test2 = pthread_create(&test1, NULL, &compil, NULL);
-    printf("%d et %ld\n", test2, test1);
     t_stock test;
     parsing_input(&test, av);
     if (check_parsing(&test))
@@ -68,6 +65,11 @@ int main(int ac, char **av)
         printf("ERROR");
         return (0);
     }
+    pthread_t *threads = malloc(sizeof(pthread_t) * test.number_of_coders);
+    int i = 0;
+    while (threads[i])
+        i++;
+    printf("%d\n", i);
 }
 
 // valgrind --tools=helgrind ou --tools=drd

@@ -1,8 +1,8 @@
-SRC = test.c
+SRC = parsing.c
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -pthread -I.
+CFLAGS = -Wall -Werror -Wextra -pthread -I -g3.
 
 DEP = $(OBJ:.o=.d)
 
