@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:29:33 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/05 12:17:12 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/05 17:33:22 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@ pthread_t *create_threads(t_stock *stock)
 
 int	check_parsing(t_stock *stock)
 {
-	if  (stock->number_of_coders < 1)
+	if  (stock->number_of_coders < 1 || stock->number_of_coders > 2147483647)
     	return (1);
-	else if	(stock->time_to_burnout < 1)
+	else if	(stock->time_to_burnout < 1 || stock->time_to_burnout > 2147483647)
 	    return (1);
-    else if	(stock->time_to_compile < 1)
+    else if	(stock->time_to_compile < 1 || stock->time_to_compile > 2147483647)
     	return (1);
-    else if	(stock->time_to_debug < 1)
+    else if	(stock->time_to_debug < 1 || stock->time_to_debug > 2147483647)
         return (1);
-    else if	(stock->time_to_refactor < 1)
+    else if	(stock->time_to_refactor < 1 || stock->time_to_refactor > 2147483647)
         return (1);
-    else if	(stock->number_of_compiles_required < 1)
+    else if	(stock->number_of_compiles_required < 1 || stock->number_of_compiles_required > 2147483647)
         return (1);
-    else if	(stock->dongle_cooldown < 1)
+    else if	(stock->dongle_cooldown < 1 || stock->dongle_cooldown > 2147483647)
         return (1);
     else if	(strcmp(stock->scheduler, "fifo") != 0 && strcmp(stock->scheduler, "edf") != 0)
         return (1);
