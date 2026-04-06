@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:15:10 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/06 03:40:23 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/06 18:25:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,8 @@ int			check_parsing(t_pars *stock);
 
 //thread management
 pthread_t	*create_threads(t_pars *stock);
+
+// dongle management
+pthread_mutex_t *create_mutex(t_pars *stock);
 
 #endif

@@ -1,0 +1,5 @@
+* avant la creation des threads faut initianiliser les mutex avec pthread_mutex_init
+* faire un .c pour les mutex 
+* destroy les mutex a la fin
+* des que la routine commence faut lock le mutex
+* ds que la routine ce termine faut unlokc le mutex
