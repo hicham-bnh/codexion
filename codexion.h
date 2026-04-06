@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:15:10 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/06 02:36:34 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/06 03:40:23 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,16 @@ typedef struct s_coders
 	t_dongle	*l_dongle;
 	t_dongle	*r_dongle;
 }			t_coders;
+
+typedef struct s_env
+{
+	t_pars	*params;
+	t_dongle	*dongles;
+	pthread_mutex_t	*log_lock;
+	int		stop;
+	long long	start;
+}		t_env;
+
 
 //parsing
 void		parsing_input(t_pars *test, char **str);
