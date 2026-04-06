@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:15:10 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/02 15:49:01 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/06 02:36:34 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 # include <pthread.h>
 # include <string.h>
 # include <unistd.h>
+# include <sys/time.h>
 
-typedef struct s_stock
+typedef struct s_pars
 {
 	int		number_of_coders;
 	int		time_to_burnout;
@@ -29,8 +30,30 @@ typedef struct s_stock
 	int		number_of_compiles_required;
 	int		dongle_cooldown;
 	char	*scheduler;
-}			t_stock;
+}			t_pars;
 
-void parsing_input(t_stock *test, char **str);
+typedef struct s_dongle
+{
+	pthread_mutex_t	lock;
+	pthread_cond_t	cond;
+	long long		last_usage;
+}		t_dongle;
+
+typedef struct s_coders
+{
+	int			id;
+	pthread_t	thread;
+	long long	ast_compile;
+	int			compil_count;
+	t_dongle	*l_dongle;
+	t_dongle	*r_dongle;
+}			t_coders;
+
+//parsing
+void		parsing_input(t_pars *test, char **str);
+int			check_parsing(t_pars *stock);
+
+//thread management
+pthread_t	*create_threads(t_pars *stock);
 
 #endif

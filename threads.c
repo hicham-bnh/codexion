@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/16 10:16:49 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/05 21:22:38 by mobenhab         ###   ########.fr       */
+/*   Created: 2026/04/05 20:33:27 by mobenhab          #+#    #+#             */
+/*   Updated: 2026/04/05 21:19:25 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	main(int ac, char **av)
+pthread_t	*create_threads(t_pars *stock)
 {
-	t_pars		stock;
 	pthread_t	*threads;
 
-	if (ac != 9)
-	{
-		printf("ERROR");
-		return (0);
-	}
-	parsing_input(&stock, av);
-	if (check_parsing(&stock))
-	{
-		printf("ERROR");
-		return (0);
-	}
-	threads = create_threads(&stock);
-	free(threads);
+	threads = malloc(sizeof(pthread_t) * stock->number_of_coders);
+	if (!threads)
+		return (NULL);
+	return (threads);
 }
