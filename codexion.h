@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:15:10 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/06 18:25:24 by marvin           ###   ########.fr       */
+/*   Updated: 2026/04/07 12:51:35 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <stdbool.h>
 
 typedef struct s_pars
 {
@@ -37,6 +38,7 @@ typedef struct s_dongle
 	pthread_mutex_t	lock;
 	pthread_cond_t	cond;
 	long long		last_usage;
+	bool		dispo;
 }		t_dongle;
 
 typedef struct s_coders

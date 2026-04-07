@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:29:33 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/05 21:22:10 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/07 12:44:08 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,3 @@ void	parsing_input(t_pars *stock, char **str)
 	stock->dongle_cooldown = atoi(str[7]);
 	stock->scheduler = str[8];
 }
-
-// valgrind --tools=helgrind ou --tools=drd
