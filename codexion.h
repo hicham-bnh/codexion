@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
+/*   By: MSI <MSI@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:15:10 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/07 20:22:46 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/07 22:58:58 by MSI              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ typedef struct s_env
 	t_pars	*params;
 	t_dongle	*dongles;
 	t_coders	*coders;
-	pthread_mutex_t	*log_lock;
+	pthread_mutex_t	log_lock;
+	pthread_mutex_t	status_lock;
 	int		stop;
 	long long	start;
 }		t_env;
