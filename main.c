@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:16:49 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/07 19:47:23 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/07 20:01:27 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ pthread_t       *create_threads(t_pars *stock)
         {
                 if (pthread_create(&threads[i], NULL, &coder_routine, NULL))
                         return (NULL);
-		printf("thread %d cree\n", i);
 		i++;
         }
 	i = 0;
@@ -47,7 +46,6 @@ pthread_t       *create_threads(t_pars *stock)
 	{
 		if (pthread_join(threads[i], NULL))
                         return (NULL);
-		printf("thread %d finish\n", i);
 		i++;
 	}
 	return (threads);

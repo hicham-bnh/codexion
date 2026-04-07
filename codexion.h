@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:15:10 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/07 12:51:35 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/07 20:22:46 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,21 @@ typedef struct s_dongle
 typedef struct s_coders
 {
 	int			id;
-	pthread_t	thread;
-	long long	ast_compile;
 	int			compil_count;
+	long long	last_compile;
+	long long	dead_line;
+	pthread_t	thread;
 	t_dongle	*l_dongle;
 	t_dongle	*r_dongle;
+	t_env		*env;
+	pthread_mutex_t	coder_lock;
 }			t_coders;
 
 typedef struct s_env
 {
 	t_pars	*params;
 	t_dongle	*dongles;
+	t_coders	*coders;
 	pthread_mutex_t	*log_lock;
 	int		stop;
 	long long	start;

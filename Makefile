@@ -1,4 +1,4 @@
-SRC = parsing.c main.c mutex.c
+SRC = parsing.c main.c mutex.c #threads.c
 
 CC = cc
 

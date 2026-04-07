@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 20:33:27 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/07 19:36:23 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/07 20:45:07 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@
 //        return (NULL);
 //}
 
+void    init_env(t_env *env, t_pars *stock)
+{
+               
+}
 
-
-pthread_t       *create_threads(t_pars *stock, void *func)
+pthread_t       *create_threads(t_pars *stock)
 {
 	pthread_t	*threads;
         int     i;
