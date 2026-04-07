@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:16:49 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/07 18:23:57 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/07 19:47:23 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int mails = 0;
 pthread_mutex_t	mutex;
 
-void* routine()
+void *coder_routine()
 {
 	for (int i = 0; i < 1000000; i++)
 	{
@@ -37,7 +37,7 @@ pthread_t       *create_threads(t_pars *stock)
 		return (NULL);
         while (i < stock->number_of_coders)
         {
-                if (pthread_create(&threads[i], NULL, &routine, NULL))
+                if (pthread_create(&threads[i], NULL, &coder_routine, NULL))
                         return (NULL);
 		printf("thread %d cree\n", i);
 		i++;

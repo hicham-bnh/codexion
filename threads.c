@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 20:33:27 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/07 13:22:55 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/07 19:36:23 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 //        // lock le mutex au debut et le unlock a la fin
 //        return (NULL);
 //}
+
+
 
 pthread_t       *create_threads(t_pars *stock, void *func)
 {
