@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:16:49 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/07 20:01:27 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:27:35 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,23 @@ void *coder_routine()
 	return (NULL);
 }
 
-pthread_t       *create_threads(t_pars *stock)
+pthread_t       *create_threads(t_env *env)
 {
 	pthread_t	*threads;
         int     i;
         
         i = 0;
-	threads = malloc(sizeof(pthread_t) * stock->number_of_coders);
+	threads = malloc(sizeof(pthread_t) * env->params->number_of_coders);
 	if (!threads)
 		return (NULL);
-        while (i < stock->number_of_coders)
+        while (i < env->params->number_of_coders)
         {
                 if (pthread_create(&threads[i], NULL, &coder_routine, NULL))
                         return (NULL);
 		i++;
         }
 	i = 0;
-	while (i < stock->number_of_coders)
+	while (i < env->params->number_of_coders)
 	{
 		if (pthread_join(threads[i], NULL))
                         return (NULL);
@@ -53,23 +53,21 @@ pthread_t       *create_threads(t_pars *stock)
 
 int	main(int ac, char **av)
 {
-	t_pars		stock;
-	pthread_t	*coders;
+	t_env	env;
 
 	if (ac != 9)
 	{
 		printf("ERROR");
 		return (0);
 	}
-	parsing_input(&stock, av);
-	if (check_parsing(&stock))
+	if (parsing_input(&env, av))
 	{
 		printf("ERROR");
 		return (0);
 	}
 	pthread_mutex_init(&mutex, NULL);
-	coders = create_threads(&stock);
+	env.coders->thread = create_threads(&env);
 	pthread_mutex_destroy(&mutex);
 	printf("Number : %d\n", mails);
-	free(coders);
+	free(env.coders);
 }

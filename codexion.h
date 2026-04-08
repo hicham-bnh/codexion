@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: MSI <MSI@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 10:15:10 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/07 22:58:58 by MSI              ###   ########.fr       */
+/*   Updated: 2026/04/08 14:23:35 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct s_coders
 	pthread_t	thread;
 	t_dongle	*l_dongle;
 	t_dongle	*r_dongle;
-	t_env		*env;
 	pthread_mutex_t	coder_lock;
 }			t_coders;
 
@@ -67,13 +66,13 @@ typedef struct s_env
 
 
 //parsing
-void		parsing_input(t_pars *test, char **str);
-int			check_parsing(t_pars *stock);
+int		parsing_input(t_env *env, char **str);
+int			check_parsing(t_env *env);
 
 //thread management
-pthread_t	*create_threads(t_pars *stock);
+pthread_t	*create_threads(t_env *env);
 
 // dongle management
-pthread_mutex_t *create_mutex(t_pars *stock);
+pthread_mutex_t *create_mutex(t_env *env);
 
 #endif

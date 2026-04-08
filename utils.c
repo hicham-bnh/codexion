@@ -37,3 +37,8 @@ void    ft_sleep(long long time, t_env *env)
                 usleep(500);
         }
 }
+
+void    init_env(t_env *env)
+{
+        
+}
