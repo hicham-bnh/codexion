@@ -1,30 +1,30 @@
-SRC = parsing.c main.c mutex.c #threads.c
+SRC = main.c parsing.c
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -pthread -I -g3.
+CFLAGS = -Wall -Werror -Wextra -pthread -g3 -I.
 
 DEP = $(OBJ:.o=.d)
 
 NAME = codexion
 
-OBJ = $(SRC:.c=.o) 
+OBJ = $(SRC:.c=.o)
 
-.PHONY: all re fclean clean
+.PHONY: all re clean fclean 
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 		$(CC) $(CFLAGS) -o $@ $^
 
-%.o: %.c
+%.o:%.c
 		$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
 
-clean: 
+clean:
 		rm -rf $(OBJ) $(DEP)
 
 fclean: clean
-		rm -f $(NAME)
+		rm -rf $(NAME)
 
 re: fclean all
 

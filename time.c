@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mutex.c                                            :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 12:39:02 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/08 14:24:44 by mobenhab         ###   ########.fr       */
+/*   Created: 2026/04/09 20:36:30 by mobenhab          #+#    #+#             */
+/*   Updated: 2026/04/09 20:38:58 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-pthread_mutex_t *create_mutex(t_env *env)
+long	get_time(void)
 {
-	pthread_mutex_t *mutexs;
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000L));
+}
 
-        mutexs = malloc(sizeof(pthread_mutex_t) * env->params->number_of_coders);
-        if (!mutexs)
-                return (NULL);
-        return (mutexs);
+long	ft_time(long	start)
+{
+	return (get_time() - start);
 }

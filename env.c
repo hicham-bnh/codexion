@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 20:04:08 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/09 20:29:35 by mobenhab         ###   ########.fr       */
+/*   Created: 2026/04/09 20:22:09 by mobenhab          #+#    #+#             */
+/*   Updated: 2026/04/09 20:28:37 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int main(int ac, char **av)
+int	init_env(t_env *env)
 {
-	t_env	env;
-
-	if (ac != 9)
-	{
-		printf("ERROR\n");
+	int	i;
+	
+	env->coders = malloc(sizeof(t_coders) * env->pars.number_coders);
+	if (!env->coders)
+		return (1);
+	env->dongles = malloc(sizeof(t_dongles) * env->pars.number_coders);
+	if (!env->dongles)
+	{	
+		free(env->coders);
 		return (1);
 	}
-	pars_input(&env, av);
+	i = 0;
+	while (i < env->pars.number_coders)
+	{
+		env->coders[i].id = i + 1;
+		if (pthread_mutex_init(&env->dongles[i].mutex, NULL))
+			return (1);
+		i++;
+	}
+	return (0);
 }
