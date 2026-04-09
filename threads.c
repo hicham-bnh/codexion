@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:16:25 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/09 22:32:24 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/10 00:04:08 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,27 @@ void	*routine(void *arg)
 	coders = (t_coders *)arg;
 	while (1)
 	{
-		pthread_mutex_lock(&coders->env->lock);
-		if (coders->l_dongle->free || coders->r_dongle->free)
-		{
-			pthread_mutex_unlock(&coders->env->lock);
+		if (coders->compile == coders->env->pars.compiles_required)
 			break;
-		}
+		pthread_mutex_lock(&coders->env->lock);
+		while (coders->l_dongle->free || coders->r_dongle->free)
+			pthread_cond_wait(&coders->env->dongles->cond, &coders->env->lock);
+		pthread_mutex_unlock(&coders->env->lock);
 		pthread_mutex_lock(&coders->l_dongle->mutex);
 		coders->l_dongle->free = 1;
 		pthread_mutex_lock(&coders->r_dongle->mutex);
 		coders->r_dongle->free = 1;
 		printf("%ld %d  has taken a dongle\n", ft_time(coders->env->start), coders->id);
 		printf("%ld %d  has taken a dongle\n", ft_time(coders->env->start), coders->id);
-		pthread_mutex_unlock(&coders->env->lock);
 		coders->last_compile = get_time();
 		printf("%ld %d is compiling\n", ft_time(coders->env->start), coders->id);
+		coders->compile++;
 		usleep(coders->env->pars.to_compile * 1000);
-		pthread_mutex_unlock(&coders->l_dongle->mutex);
 		coders->l_dongle->free = 0;
-		pthread_mutex_unlock(&coders->r_dongle->mutex);
+		pthread_mutex_unlock(&coders->l_dongle->mutex);
 		coders->r_dongle->free = 0;
+		pthread_mutex_unlock(&coders->r_dongle->mutex);
+		pthread_cond_broadcast(&coders->env->dongles->cond);
 		printf("%ld %d is debugging\n", ft_time(coders->env->start), coders->id);
 		usleep(coders->env->pars.to_debug * 1000);
 		printf("%ld %d is refactoring\n", ft_time(coders->env->start), coders->id);
