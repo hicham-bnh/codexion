@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:16:25 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/10 00:04:08 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/10 00:48:14 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	create_threads(t_env *env)
 	{
 		if (pthread_join(env->coders[i].thread, NULL))
 			return (1);
+		env->dongles->last_use = env->pars.dongle_cooldown;
 		i++;
 	}
 	return (0);
@@ -47,7 +48,7 @@ void	*routine(void *arg)
 		if (coders->compile == coders->env->pars.compiles_required)
 			break;
 		pthread_mutex_lock(&coders->env->lock);
-		while (coders->l_dongle->free || coders->r_dongle->free)
+		while ((coders->l_dongle->free || coders->r_dongle->free) || ((coders->r_dongle->free == 0 && ft_time(coders->r_dongle->last_use < coders->env->pars.dongle_cooldown)) || (coders->l_dongle->free == 0 && ft_time(coders->l_dongle->last_use < coders->env->pars.dongle_cooldown))))
 			pthread_cond_wait(&coders->env->dongles->cond, &coders->env->lock);
 		pthread_mutex_unlock(&coders->env->lock);
 		pthread_mutex_lock(&coders->l_dongle->mutex);
@@ -60,8 +61,10 @@ void	*routine(void *arg)
 		printf("%ld %d is compiling\n", ft_time(coders->env->start), coders->id);
 		coders->compile++;
 		usleep(coders->env->pars.to_compile * 1000);
+		coders->l_dongle->last_use = get_time();
 		coders->l_dongle->free = 0;
 		pthread_mutex_unlock(&coders->l_dongle->mutex);
+		coders->r_dongle->last_use = get_time();		
 		coders->r_dongle->free = 0;
 		pthread_mutex_unlock(&coders->r_dongle->mutex);
 		pthread_cond_broadcast(&coders->env->dongles->cond);
