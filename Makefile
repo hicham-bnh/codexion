@@ -1,4 +1,4 @@
-SRC = main.c parsing.c
+SRC = main.c parsing.c env.c threads.c time.c
 
 CC = cc
 
