@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:22:09 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/09 22:18:33 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/10 15:04:44 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	init_env(t_env *env)
 	{
 		env->coders[i].id = i + 1;
 		env->dongles[i].free = 0;
+		env->dongles[i].last_use = env->pars.dongle_cooldown * 2;
 		if (pthread_mutex_init(&env->dongles[i].mutex, NULL))
 			return (1);
 		if (pthread_cond_init(&env->dongles->cond, NULL))
