@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 20:37:50 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/11 00:44:59 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/11 16:07:27 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ void	compile(void *arg)
 	coder->last_compile = get_time();
 	coder->compile++;
 	pthread_mutex_unlock(&coder->env->write);
-	usleep(coder->env->pars.to_burnout * 1000);
+	usleep(coder->env->pars.to_compile * 1000);
 }

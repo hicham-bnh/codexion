@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:04 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/10 23:32:42 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/11 16:30:30 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct s_dongles
 	pthread_mutex_t	mutex;
 	long	last_use;
 	int	free;
-	pthread_cond_t	cond;
 }		t_dongles;
 
 typedef struct s_coders
