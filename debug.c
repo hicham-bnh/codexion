@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 20:04:08 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/10 20:42:48 by mobenhab         ###   ########.fr       */
+/*   Created: 2026/04/10 22:11:31 by mobenhab          #+#    #+#             */
+/*   Updated: 2026/04/11 00:54:24 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int main(int ac, char **av)
+void	debug(void *arg)
 {
-	t_env	env;
+	t_coders	*coder;
 
-	memset(&env, 0, sizeof(t_env));
-	if (ac != 9 || pars_input(&env, av))
-	{
-		printf("ERROR\n");
-		return (1);
-	}
-	if(init_env(&env))
-		return (1);
-	if (init_mutex_env(&env))
-		return (1);
-	create_threads(&env);
+	coder = (t_coders *)arg;
+	pthread_mutex_lock(&coder->env->write);
+	printf("%ld %d is debugging\n", ft_time(coder->env->start), coder->id);
+	pthread_mutex_unlock(&coder->env->write);
+	usleep(coder->env->pars.to_refactor * 1000);
 }

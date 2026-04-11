@@ -1,0 +1,311 @@
+long	get_time(void)
+{
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000L));
+}
+
+long	ft_time(long	start)
+{
+	return (get_time() - start);
+}
+
+int	create_threads(t_env *env)
+{
+	int	i;
+
+	i = 0 ;
+	while (i < env->pars.number_coders)
+	{
+		env->coders[i].env = env;
+		env->coders[i].id = i + 1;
+		env->coders[i].compile = 0;
+		env->coders[i].l_dongle = &env->dongles[i];
+		env->coders[i].r_dongle = &env->dongles[(i + 1) % env->pars.number_coders];
+		
+		if (pthread_create(&env->coders[i].thread, NULL, &routine, &env->coders[i]))
+			return (1);
+		i++;
+	}
+	i = 0;
+	while (i < env->pars.number_coders)
+	{
+		if (pthread_join(env->coders[i].thread, NULL))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+void	*routine(void *arg)
+{
+	t_coders	*coder;
+
+	coder = (t_coders *)arg;
+	while(1)
+	{
+		pthread_mutex_lock(&coder->env->lock);
+		if (check_compile(coder))
+		{
+			pthread_mutex_unlock(&coder->env->lock);
+			break;
+		}
+		while (!check_dongles(coder))
+		{
+			pthread_cond_wait(&coder->env->dongles->cond,
+				&coder->env->lock);
+		}
+		pthread_mutex_unlock(&coder->env->lock);
+		take_dongle(coder);
+		compile(coder);
+		put_dongle(coder);
+		pthread_cond_broadcast(&coder->env->dongles->cond);
+		debug(coder);
+		refctor(coder);
+	}
+	return (NULL);
+}
+#include "codexion.h"
+
+void	refctor(void *arg)
+{
+	t_coders	*coder;
+
+	coder = (t_coders *)arg;
+	pthread_mutex_lock(&coder->env->write);
+	printf("%ld %d is refactoring\n", ft_time(coder->env->start), coder->id);
+	pthread_mutex_unlock(&coder->env->write);
+	usleep(coder->env->pars.to_debug * 1000);
+}
+static int	check_pars(t_env *env)
+{
+	if (1 > env->pars.number_coders || env->pars.number_coders > 2147483647)
+		return (1);
+	if (0 > env->pars.to_burnout)
+		return (1);
+	if (0 > env->pars.to_compile)
+		return (1);
+	if (0 > env->pars.to_refactor)
+		return (1);
+	if (0 > env->pars.to_debug)
+		return (1);
+	if ((0 > env->pars.compiles_required)
+		|| (env->pars.compiles_required > 2147483647))
+		return (1);
+	if (0 > env->pars.dongle_cooldown)
+		return (1);
+	if (!env->pars.shceduler)
+		return (1);
+	if ((strcmp(env->pars.shceduler, "fifo"))
+		&& (strcmp(env->pars.shceduler, "edf")))
+		return (1);
+	return (0);
+}
+
+int	pars_input(t_env *env, char **arg)
+{
+	env->pars.number_coders = atoi(arg[1]);
+	env->pars.to_burnout = atoi(arg[2]);
+	env->pars.to_compile = atoi(arg[3]);
+	env->pars.to_debug = atoi(arg[4]);
+	env->pars.to_refactor = atoi(arg[5]);
+	env->pars.compiles_required = atoi(arg[6]);
+	env->pars.dongle_cooldown = atoi(arg[7]);
+	env->pars.shceduler = arg[8];
+	if (check_pars(env))
+	{
+		printf("ERROR\n");
+		return (1);
+	}
+	return (0);
+}
+#include "codexion.h"
+
+int main(int ac, char **av)
+{
+	t_env	env;
+
+	memset(&env, 0, sizeof(t_env));
+	if (ac != 9 || pars_input(&env, av))
+	{
+		printf("ERROR\n");
+		return (1);
+	}
+	if(init_env(&env))
+		return (1);
+	if (init_mutex_env(&env))
+		return (1);
+	create_threads(&env);
+}
+int	init_env(t_env *env)
+{
+	int	i;
+	
+	env->coders = malloc(sizeof(t_coders) * env->pars.number_coders);
+	if (!env->coders)
+		return (1);
+	env->dongles = malloc(sizeof(t_dongles) * env->pars.number_coders);
+	if (!env->dongles)
+	{	
+		free(env->coders);
+		return (1);
+	}
+	i = 0;
+	while (i < env->pars.number_coders)
+	{
+		env->coders[i].id = i + 1;
+		env->dongles[i].free = 0;
+		env->dongles[i].last_use = env->pars.dongle_cooldown * 2;
+		if (pthread_mutex_init(&env->dongles[i].mutex, NULL))
+			return (1);
+		if (pthread_cond_init(&env->dongles[i].cond, NULL))
+			return (1);
+		i++;
+	}
+	env->start = get_time();
+	return (0);
+}
+int	init_mutex_env(t_env *env)
+{
+	if (pthread_mutex_init(&env->lock, NULL))
+		return (1);
+	if (pthread_mutex_init(&env->write, NULL))
+		return (1);
+	return (0);
+}
+#include "codexion.h"
+
+void	ft_printtest()
+{
+	printf("DEBUG\n");
+}
+
+void	take_dongle(t_coders *coder)
+{
+	if (coder->id % 2 == 0)
+	{
+		pthread_mutex_lock(&coder->l_dongle->mutex);
+		coder->l_dongle->free = 1;
+		pthread_mutex_unlock(&coder->l_dongle->mutex);
+		pthread_mutex_lock(&coder->r_dongle->mutex);
+		coder->r_dongle->free = 1;
+		pthread_mutex_unlock(&coder->r_dongle->mutex);
+	}
+	else
+	{
+		pthread_mutex_lock(&coder->r_dongle->mutex);
+		coder->r_dongle->free = 1;
+		pthread_mutex_unlock(&coder->r_dongle->mutex);
+		pthread_mutex_lock(&coder->l_dongle->mutex);
+		coder->l_dongle->free = 1;
+		pthread_mutex_unlock(&coder->l_dongle->mutex);
+	}
+	pthread_mutex_lock(&coder->env->write);
+	printf("%ld %d  has taken a dongle\n", ft_time(coder->env->start), coder->id);
+	printf("%ld %d  has taken a dongle\n", ft_time(coder->env->start), coder->id);
+	pthread_mutex_unlock(&coder->env->write);	
+}
+void	put_dongle(t_coders *coder)
+{
+	pthread_mutex_lock(&coder->l_dongle->mutex);
+	coder->l_dongle->free = 0;
+	coder->l_dongle->last_use = get_time();
+	pthread_mutex_unlock(&coder->l_dongle->mutex);
+	pthread_mutex_lock(&coder->r_dongle->mutex);
+	coder->r_dongle->free = 0;
+	coder->r_dongle->last_use = get_time();
+	pthread_mutex_unlock(&coder->r_dongle->mutex);
+}
+void	debug(void *arg)
+{
+	t_coders	*coder;
+
+	coder = (t_coders *)arg;
+	pthread_mutex_lock(&coder->env->write);
+	printf("%ld %d is debugging\n", ft_time(coder->env->start), coder->id);
+	pthread_mutex_unlock(&coder->env->write);
+	usleep(coder->env->pars.to_refactor * 1000);
+}
+int	check_dongles(void *arg)
+{
+	t_coders	*coder;
+
+	coder = (t_coders *)arg;
+	if (coder->l_dongle->free == 1)
+		return (0);
+	if (coder->r_dongle->free == 1)
+		return (0);
+	if (coder->l_dongle->free == 0)
+		if (ft_time(coder->l_dongle->last_use)
+			< coder->env->pars.dongle_cooldown)
+			return (0);
+	if (coder->r_dongle->free == 0)
+		if (ft_time(coder->r_dongle->last_use)
+			< coder->env->pars.dongle_cooldown)
+			return (0);
+	return (1);
+}
+int	check_compile(void *arg)
+{
+	t_coders	*coder;
+
+	coder = (t_coders *)arg;
+	if (coder->compile == coder->env->pars.compiles_required)
+		return (1);
+	return (0);
+}
+
+void	compile(void *arg)
+{
+	t_coders	*coder;
+
+	coder = (t_coders *)arg;
+	pthread_mutex_lock(&coder->env->write);
+	printf("%ld %d is compiling\n", ft_time(coder->env->start), coder->id);
+	coder->last_compile = get_time();
+	coder->compile++;
+	pthread_mutex_unlock(&coder->env->write);
+	usleep(coder->env->pars.to_burnout * 1000);
+}
+typedef struct s_env t_env;
+
+typedef struct s_pars
+{
+	int		number_coders;
+	long	to_burnout;
+	long	to_compile;
+	long	to_debug;
+	long	to_refactor;
+	int		compiles_required;
+	long	dongle_cooldown;
+	char	*shceduler;
+}		t_pars;
+
+typedef struct s_dongles
+{
+	int		id;
+	pthread_mutex_t	mutex;
+	long	last_use;
+	int	free;
+	pthread_cond_t	cond;
+}		t_dongles;
+
+typedef struct s_coders
+{
+	int		id;
+	int		compile;
+	long		last_compile;
+	t_dongles	*r_dongle;
+	t_dongles	*l_dongle;
+	pthread_t	thread;
+	t_env	*env;
+}		t_coders;
+
+typedef struct s_env
+{
+	t_coders *coders;
+	t_dongles *dongles;
+	t_pars pars;
+	pthread_mutex_t	lock;
+	pthread_mutex_t	write;
+	long	start;
+}		t_env;

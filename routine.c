@@ -1,30 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 20:04:08 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/10 20:42:48 by mobenhab         ###   ########.fr       */
+/*   Created: 2026/04/10 20:34:25 by mobenhab          #+#    #+#             */
+/*   Updated: 2026/04/11 03:01:02 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int main(int ac, char **av)
+void	*routine(void *arg)
 {
-	t_env	env;
+	t_coders	*coder;
 
-	memset(&env, 0, sizeof(t_env));
-	if (ac != 9 || pars_input(&env, av))
+	coder = (t_coders *)arg;
+	while(1)
 	{
-		printf("ERROR\n");
-		return (1);
+		pthread_mutex_lock(&coder->env->lock);
+		if (check_compile(coder))
+		{
+			pthread_mutex_unlock(&coder->env->lock);
+			break;
+		}
+		pthread_mutex_unlock(&coder->env->lock);
+		take_dongle(coder);
+		compile(coder);
+		put_dongle(coder);
+		pthread_cond_broadcast(&coder->env->dongles->cond);
+		debug(coder);
+		refctor(coder);
 	}
-	if(init_env(&env))
-		return (1);
-	if (init_mutex_env(&env))
-		return (1);
-	create_threads(&env);
+	return (NULL);
 }

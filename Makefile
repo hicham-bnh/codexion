@@ -1,8 +1,8 @@
-SRC = main.c parsing.c env.c threads.c time.c
+SRC = main.c parsing.c env.c threads.c time.c routine.c refactor.c dongle.c debug.c cond.c compile.c 
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -pthread -g3 -I.
+CFLAGS = -Wall -Werror -Wextra  -pthread -g3 -I.
 #-fsanitize=thread
 DEP = $(OBJ:.o=.d)
 

@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:04 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/09 22:17:25 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/10 23:32:42 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_env
 	t_dongles *dongles;
 	t_pars pars;
 	pthread_mutex_t	lock;
+	pthread_mutex_t	write;
 	long	start;
 }		t_env;
 
@@ -79,5 +80,24 @@ int	create_threads(t_env *env);
 
 //env
 int	init_env(t_env *env);
+int	init_mutex_env(t_env *env);
+
+//compile
+int	check_compile(void *arg);
+void	compile(void *arg);
+
+//dongle
+int	check_dongles(void *arg);
+void	take_dongle(t_coders *coder);
+void	put_dongle(t_coders *coder);
+
+//debug
+void	debug(void *arg);
+
+//refactor
+void	refctor(void *arg);
+
+//debug
+void	ft_printtest();
 
 #endif
