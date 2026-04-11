@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 20:34:25 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/11 17:09:29 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/11 17:21:14 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ void	*routine(void *arg)
 			break;
 		}
 		while (!check_dongles(coder))
+		{
 			continue;
+		}
 		pthread_mutex_unlock(&coder->env->lock);
 		take_dongle(coder);
 		compile(coder);
