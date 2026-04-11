@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:22:09 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/11 16:32:16 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/11 17:09:08 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	init_env(t_env *env)
 		i++;
 	}
 	env->start = get_time();
+	env->stop = 0;
 	return (0);
 }
 int	init_mutex_env(t_env *env)

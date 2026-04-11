@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 20:34:25 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/11 16:33:35 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/11 17:09:29 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*routine(void *arg)
 	coder = (t_coders *)arg;
 	if (coder->id % 2 == 0)
 		usleep(coder->env->pars.to_compile * 1000);
-	while(1)
+	while(!coder->env->stop)
 	{
 		pthread_mutex_lock(&coder->env->lock);
 		if (check_compile(coder))

@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:04 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/11 16:30:30 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/11 17:08:49 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_env
 	pthread_mutex_t	lock;
 	pthread_mutex_t	write;
 	long	start;
+	int	stop;
 }		t_env;
 
 
