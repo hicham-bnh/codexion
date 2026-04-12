@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 20:37:50 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/11 16:07:27 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/12 21:35:21 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	compile(void *arg)
 
 	coder = (t_coders *)arg;
 	pthread_mutex_lock(&coder->env->write);
+	pthread_mutex_unlock(&coder->env->write);
 	printf("%ld %d is compiling\n", ft_time(coder->env->start), coder->id);
+	usleep(coder->env->pars.to_compile * 1000);
 	coder->last_compile = get_time();
 	coder->compile++;
-	pthread_mutex_unlock(&coder->env->write);
-	usleep(coder->env->pars.to_compile * 1000);
 }
