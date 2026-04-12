@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:16:25 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/12 20:48:14 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/13 01:20:48 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	create_threads(t_env *env)
 
 int	creat_monitor(t_env *env)
 {
-	if (pthread_create(&env->monitor, NULL, &monitor, &env))
+	if (pthread_create(&env->monitor, NULL, &monitor, env))
 		return (1);
 	if (pthread_join(env->monitor, NULL))
 		return (1);
