@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:22:09 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/11 17:09:08 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/12 20:45:55 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	init_env(t_env *env)
 {
 	int	i;
-	
+
 	env->coders = malloc(sizeof(t_coders) * env->pars.number_coders);
 	if (!env->coders)
 		return (1);
 	env->dongles = malloc(sizeof(t_dongles) * env->pars.number_coders);
 	if (!env->dongles)
-	{	
+	{
 		free(env->coders);
 		return (1);
 	}
@@ -37,8 +37,10 @@ int	init_env(t_env *env)
 	}
 	env->start = get_time();
 	env->stop = 0;
+	env->thread_finish = 0;
 	return (0);
 }
+
 int	init_mutex_env(t_env *env)
 {
 	if (pthread_mutex_init(&env->lock, NULL))

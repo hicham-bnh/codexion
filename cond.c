@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:00:14 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/11 01:56:26 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/12 20:44:32 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,55 @@ int	check_dongles(void *arg)
 	t_coders	*coder;
 
 	coder = (t_coders *)arg;
+	if (dongle_left(coder) && dongle_right(coder))
+		return (1);
+	return (0);
+}
+
+int	dongle_left(void *arg)
+{
+	t_coders	*coder;
+
+	coder = (t_coders *)arg;
+	pthread_mutex_lock(&coder->l_dongle->mutex);
 	if (coder->l_dongle->free == 1)
+	{
+		pthread_mutex_unlock(&coder->l_dongle->mutex);
 		return (0);
-	if (coder->r_dongle->free == 1)
-		return (0);
+	}
 	if (coder->l_dongle->free == 0)
+	{
 		if (ft_time(coder->l_dongle->last_use)
 			< coder->env->pars.dongle_cooldown)
+		{
+			pthread_mutex_unlock(&coder->l_dongle->mutex);
 			return (0);
+		}
+	}
+	pthread_mutex_unlock(&coder->l_dongle->mutex);
+	return (1);
+}
+
+int	dongle_right(void *arg)
+{
+	t_coders	*coder;
+
+	coder = (t_coders *)arg;
+	pthread_mutex_lock(&coder->r_dongle->mutex);
+	if (coder->r_dongle->free == 1)
+	{
+		pthread_mutex_unlock(&coder->r_dongle->mutex);
+		return (0);
+	}
 	if (coder->r_dongle->free == 0)
+	{
 		if (ft_time(coder->r_dongle->last_use)
 			< coder->env->pars.dongle_cooldown)
+		{
+			pthread_mutex_unlock(&coder->r_dongle->mutex);
 			return (0);
+		}
+	}
+	pthread_mutex_unlock(&coder->r_dongle->mutex);
 	return (1);
 }

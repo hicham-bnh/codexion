@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:16:25 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/11 01:21:59 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/12 20:48:14 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ int	create_threads(t_env *env)
 		env->coders[i].id = i + 1;
 		env->coders[i].compile = 0;
 		env->coders[i].l_dongle = &env->dongles[i];
-		env->coders[i].r_dongle = &env->dongles[(i + 1) % env->pars.number_coders];
-		
-		if (pthread_create(&env->coders[i].thread, NULL, &routine, &env->coders[i]))
+		env->coders[i].r_dongle = &env->dongles[(i + 1)
+			% env->pars.number_coders];
+		if (pthread_create(&env->coders[i].thread, NULL,
+				&routine, &env->coders[i]))
 			return (1);
 		i++;
 	}
@@ -38,52 +39,12 @@ int	create_threads(t_env *env)
 	}
 	return (0);
 }
-//void	*routine(void *arg)
-//{
-//	t_coders	*coders;
-//	coders = (t_coders *)arg;
-//	while (1)
-//	{	
-//		pthread_mutex_lock(&coders->env->lock);
-//		if (coders->compile == coders->env->pars.compiles_required)
-//		{
-//			pthread_mutex_unlock(&coders->env->lock);
-//			break;
-//		}
-//		while ((coders->l_dongle->free || coders->r_dongle->free
-//			|| (!coders->l_dongle->free && ft_time(coders->l_dongle->last_use) < coders->env->pars.dongle_cooldown))
-//			|| (!coders->r_dongle->free && ft_time(coders->r_dongle->last_use) < coders->env->pars.dongle_cooldown))
-//		{
-//			//pthread_mutex_unlock(&coders->env->lock);
-//			pthread_cond_wait(&coders->env->dongles->cond, &coders->env->lock);
-//		}
-//		pthread_mutex_unlock(&coders->env->lock);
-//		pthread_mutex_lock(&coders->l_dongle->mutex);
-//		coders->l_dongle->free = 1;
-		
-//		pthread_mutex_lock(&coders->r_dongle->mutex);
-//		coders->r_dongle->free = 1;
-		
-		
-//		printf("%ld %d  has taken a dongle\n", ft_time(coders->env->start), coders->id);
-//		printf("%ld %d  has taken a dongle\n", ft_time(coders->env->start), coders->id);
-		
-//		coders->last_compile = get_time();
-		
-//		printf("%ld %d is compiling\n", ft_time(coders->env->start), coders->id);
-//		coders->compile++;
-//		usleep(coders->env->pars.to_compile * 1000);
-//		coders->l_dongle->last_use = get_time();
-//		coders->l_dongle->free = 0;
-//		pthread_mutex_unlock(&coders->l_dongle->mutex);
-//		coders->r_dongle->last_use = get_time();		
-//		coders->r_dongle->free = 0;
-//		pthread_mutex_unlock(&coders->r_dongle->mutex);
-//		pthread_cond_broadcast(&coders->env->dongles->cond);
-//		printf("%ld %d is debugging\n", ft_time(coders->env->start), coders->id);
-//		usleep(coders->env->pars.to_debug * 1000);
-//		printf("%ld %d is refactoring\n", ft_time(coders->env->start), coders->id);
-//		usleep(coders->env->pars.to_refactor * 1000);
-//	}
-//	return (NULL);
-//}
+
+int	creat_monitor(t_env *env)
+{
+	if (pthread_create(&env->monitor, NULL, &monitor, &env))
+		return (1);
+	if (pthread_join(env->monitor, NULL))
+		return (1);
+	return (0);
+}

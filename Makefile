@@ -2,7 +2,7 @@ SRC = main.c parsing.c env.c threads.c time.c routine.c refactor.c dongle.c debu
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra  -pthread -g3 -I.
+CFLAGS = -Wall -Werror -Wextra -pthread -fsanitize=thread -I.
 #-fsanitize=thread
 DEP = $(OBJ:.o=.d)
 

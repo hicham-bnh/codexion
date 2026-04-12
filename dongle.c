@@ -6,16 +6,11 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:51:07 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/11 16:30:13 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/12 20:45:28 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-void	ft_printtest()
-{
-	printf("DEBUG\n");
-}
 
 void	take_dongle(t_coders *coder)
 {
@@ -38,10 +33,13 @@ void	take_dongle(t_coders *coder)
 		pthread_mutex_unlock(&coder->l_dongle->mutex);
 	}
 	pthread_mutex_lock(&coder->env->write);
-	printf("%ld %d  has taken a dongle\n", ft_time(coder->env->start), coder->id);
-	printf("%ld %d  has taken a dongle\n", ft_time(coder->env->start), coder->id);
-	pthread_mutex_unlock(&coder->env->write);	
+	printf("%ld %d  has taken a dongle\n",
+		ft_time(coder->env->start), coder->id);
+	printf("%ld %d  has taken a dongle\n",
+		ft_time(coder->env->start), coder->id);
+	pthread_mutex_unlock(&coder->env->write);
 }
+
 void	put_dongle(t_coders *coder)
 {
 	pthread_mutex_lock(&coder->l_dongle->mutex);
