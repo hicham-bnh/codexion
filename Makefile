@@ -2,7 +2,7 @@ SRC = main.c burnout.c parsing.c env.c threads.c time.c routine.c refactor.c don
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -pthread -fsanitize=thread -I.
+CFLAGS = -Wall -Werror -Wextra -pthread  -I.
 #-fsanitize=thread
 DEP = $(OBJ:.o=.d)
 
@@ -10,7 +10,7 @@ NAME = codexion
 
 OBJ = $(SRC:.c=.o)
 
-.PHONY: all re clean fclean 
+.PHONY: all re clean fclean
 
 all: $(NAME)
 
@@ -27,5 +27,8 @@ fclean: clean
 		rm -rf $(NAME)
 
 re: fclean all
+
+debug: fclean
+	$(MAKE) CFLAGS=" -Wall -Werror -Wextra -pthread -fsanitize=thread -I."
 
 -include $(DEP)
