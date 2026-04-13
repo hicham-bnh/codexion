@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:00:14 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/12 20:44:32 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/13 21:41:52 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,13 @@ int	check_dongles(void *arg)
 	t_coders	*coder;
 
 	coder = (t_coders *)arg;
+	pthread_mutex_lock(&coder->env->lock);
 	if (dongle_left(coder) && dongle_right(coder))
+	{
+		pthread_mutex_unlock(&coder->env->lock);
 		return (1);
+	}
+	pthread_mutex_unlock(&coder->env->lock);
 	return (0);
 }
 

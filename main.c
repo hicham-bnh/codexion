@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:08 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/13 05:29:19 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/13 18:45:51 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int ac, char **av)
 		return (1);
 	if (create_threads(&env))
 		return (1);
-	if (creat_monitor(&env))
+	if (start_threads(&env))
 		return (1);
 	free(env.coders);
 	free(env.dongles);

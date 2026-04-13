@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 20:34:25 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/13 05:56:37 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/13 23:04:58 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,57 +19,49 @@ void	*routine(void *arg)
 	coder = (t_coders *)arg;
 	if (coder->id % 2 == 0)
 		usleep(coder->env->pars.to_compile * 1000);
-	pthread_mutex_lock(&coder->env->lock);
-	while (coder->env->stop == 0)
+	while (!check_end(coder->env))
 	{
-		pthread_mutex_unlock(&coder->env->lock);
-		pthread_mutex_lock(&coder->env->lock);
 		if (check_compile(coder))
 		{
-			coder->env->thread_finish++;
-			pthread_mutex_unlock(&coder->env->lock);
+			add_finish(coder->env);
 			break ;
 		}
-		while (!check_dongles(coder))
-			continue ;
-		pthread_mutex_unlock(&coder->env->lock);
 		take_dongle(coder);
-		compile(coder);
+		if (compile(coder))
+			break ;
 		put_dongle(coder);
-		debug(coder);
-		refctor(coder);
+		if (debug(coder))
+			break ;
+		if (refctor(coder))
+			break ;
 	}
 	return (NULL);
 }
 
-void	*monitor(void *arg)
+void	*monitor(void	*arg)
 {
 	t_env	*env;
 	int		i;
+	int		stop;
 
+	stop = 0;
 	env = (t_env *)arg;
-	pthread_mutex_lock(&env->lock);
-	while (env->stop == 0 && env->thread_finish != env->pars.compiles_required)
+	while (!check_compil_end(env))
 	{
-		pthread_mutex_unlock(&env->lock);
-		i = -1;
-		while (++i < env->pars.number_coders)
+		i = 0;
+		if (stop)
+			break ;
+		while (i < env->pars.number_coders && !stop)
 		{
-			pthread_mutex_lock(&env->lock);
-			if (ft_time(env->coders[i].last_compile) > env->pars.to_burnout)
+			if (check_burnout(&env->coders[i]))
 			{
-				env->stop++;
-				pthread_mutex_unlock(&env->lock);
-				pthread_mutex_lock(&env->write);
-				printf("%ld %d  burned out\n",
-					ft_time(env->start), env->coders[i].id);
-				pthread_mutex_unlock(&env->write);
+				stop_simul(env);
+				burnout(env, i);
+				stop = 1;
 				break ;
 			}
-			else
-				pthread_mutex_unlock(&env->lock);
+			i++;
 		}
-		break ;
 	}
 	return (NULL);
 }

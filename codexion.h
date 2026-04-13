@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:04 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/13 04:45:03 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/13 22:49:43 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,12 @@ typedef struct s_coders
 {
 	int				id;
 	int				compile;
+	int				in_compile;
+	int				finish;
 	long			last_compile;
 	t_dongles		*r_dongle;
 	t_dongles		*l_dongle;
 	pthread_t		thread;
-	pthread_mutex_t		lock_doc;
 	t_env			*env;
 }		t_coders;
 
@@ -77,17 +78,22 @@ long	ft_time(long start);
 
 //threads
 void	*routine(void *arg);
+void	*monitor(void	*arg);
+void	add_finish(t_env *env);
+void	stop_simul(t_env *env);
+int		start_threads(t_env *env);
 int		create_threads(t_env *env);
-void	*monitor(void *arg);
-int		creat_monitor(t_env *env);
+int		check_end(t_env *env);
+int		check_burnout(t_coders *coder);
 
 //env
 int		init_env(t_env *env);
 int		init_mutex_env(t_env *env);
+int		check_compil_end(t_env *env);
 
 //compile
 int		check_compile(void *arg);
-void	compile(void *arg);
+int		compile(void *arg);
 
 //dongle
 int		check_dongles(void *arg);
@@ -95,11 +101,15 @@ void	take_dongle(t_coders *coder);
 void	put_dongle(t_coders *coder);
 int		dongle_left(void *arg);
 int		dongle_right(void *arg);
+int		check_burnout(t_coders *coder);
 
 //debug
-void	debug(void *arg);
+int		debug(void *arg);
 
 //refactor
-void	refctor(void *arg);
+int		refctor(void *arg);
+
+//burnout
+void	burnout(void *arg, int i);
 
 #endif

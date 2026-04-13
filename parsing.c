@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:09:28 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/09 20:27:28 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/13 20:11:03 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	check_pars(t_env *env)
 {
-	if (1 > env->pars.number_coders || env->pars.number_coders > 2147483647)
+	if (2 > env->pars.number_coders || env->pars.number_coders > 2147483647)
 		return (1);
 	if (0 > env->pars.to_burnout)
 		return (1);
@@ -49,7 +49,6 @@ int	pars_input(t_env *env, char **arg)
 	env->pars.shceduler = arg[8];
 	if (check_pars(env))
 	{
-		printf("ERROR\n");
 		return (1);
 	}
 	return (0);
