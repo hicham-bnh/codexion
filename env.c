@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:22:09 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/12 20:45:55 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/13 04:46:47 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ int	init_env(t_env *env)
 
 int	init_mutex_env(t_env *env)
 {
+	int	i;
+
+	i = -1;
+	while (++i < env->pars.number_coders)
+	{
+		if (pthread_mutex_init(&env->coders[i].lock_doc, NULL))
+				return (1);
+	}
 	if (pthread_mutex_init(&env->lock, NULL))
 		return (1);
 	if (pthread_mutex_init(&env->write, NULL))

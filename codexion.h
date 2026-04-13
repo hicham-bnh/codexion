@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:04 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/12 21:00:09 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/13 04:45:03 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_coders
 	t_dongles		*r_dongle;
 	t_dongles		*l_dongle;
 	pthread_t		thread;
+	pthread_mutex_t		lock_doc;
 	t_env			*env;
 }		t_coders;
 
