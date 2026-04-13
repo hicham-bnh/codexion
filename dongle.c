@@ -6,12 +6,11 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:51:07 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/13 23:45:47 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/14 01:18:28 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
 
 void	take_dongle(t_coders *coder)
 {
@@ -26,7 +25,11 @@ void	take_dongle(t_coders *coder)
 		pthread_mutex_lock(&coder->l_dongle->mutex);
 	}
 	if (check_end(coder->env))
+	{
+		pthread_mutex_unlock(&coder->l_dongle->mutex);
+		pthread_mutex_unlock(&coder->r_dongle->mutex);
 		return ;
+	}
 	pthread_mutex_lock(&coder->env->write);
 	printf("%ld %d has taken a dongle\n",
 		ft_time(coder->env->start), coder->id);
