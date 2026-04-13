@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 20:34:25 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/13 01:17:17 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/13 05:56:37 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	*routine(void *arg)
 	coder = (t_coders *)arg;
 	if (coder->id % 2 == 0)
 		usleep(coder->env->pars.to_compile * 1000);
+	pthread_mutex_lock(&coder->env->lock);
 	while (coder->env->stop == 0)
 	{
+		pthread_mutex_unlock(&coder->env->lock);
 		pthread_mutex_lock(&coder->env->lock);
 		if (check_compile(coder))
 		{
@@ -46,14 +48,16 @@ void	*monitor(void *arg)
 	int		i;
 
 	env = (t_env *)arg;
+	pthread_mutex_lock(&env->lock);
 	while (env->stop == 0 && env->thread_finish != env->pars.compiles_required)
 	{
-		i = 0;
-		while (i < env->pars.number_coders)
+		pthread_mutex_unlock(&env->lock);
+		i = -1;
+		while (++i < env->pars.number_coders)
 		{
+			pthread_mutex_lock(&env->lock);
 			if (ft_time(env->coders[i].last_compile) > env->pars.to_burnout)
 			{
-				pthread_mutex_lock(&env->lock);
 				env->stop++;
 				pthread_mutex_unlock(&env->lock);
 				pthread_mutex_lock(&env->write);
@@ -63,8 +67,9 @@ void	*monitor(void *arg)
 				break ;
 			}
 			else
-				i++;
+				pthread_mutex_unlock(&env->lock);
 		}
+		break ;
 	}
 	return (NULL);
 }
