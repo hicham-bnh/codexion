@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:22:09 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/14 01:19:29 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/15 00:28:43 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	init_env(t_env *env)
 	while (i < env->pars.number_coders)
 	{
 		env->coders[i].id = i + 1;
+		env->coders[i].in_compile = 0;
 		env->dongles[i].free = 0;
 		env->dongles[i].last_use = 0;
 		if (pthread_mutex_init(&env->dongles[i].mutex, NULL))

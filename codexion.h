@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:04 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/14 01:19:44 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/15 00:25:52 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,6 @@ int		refctor(void *arg);
 
 //burnout
 void	burnout(void *arg, int i);
+void	how_take(t_coders *coder);
 
 #endif

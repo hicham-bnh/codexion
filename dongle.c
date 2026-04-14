@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:51:07 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/14 01:19:31 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/15 00:30:33 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,7 @@
 
 void	take_dongle(t_coders *coder)
 {
-	if (coder->id % 2 == 0)
-	{
-		pthread_mutex_lock(&coder->l_dongle->mutex);
-		pthread_mutex_lock(&coder->r_dongle->mutex);
-	}
-	else
-	{
-		pthread_mutex_lock(&coder->r_dongle->mutex);
-		pthread_mutex_lock(&coder->l_dongle->mutex);
-	}
+	how_take(coder);
 	if (check_end(coder->env))
 	{
 		pthread_mutex_unlock(&coder->l_dongle->mutex);
@@ -42,18 +33,46 @@ void	put_dongle(t_coders *coder)
 {
 	if (coder->id % 2 == 0)
 	{
+		pthread_mutex_lock(&coder->l_dongle->mutex);
 		coder->l_dongle->free = 0;
 		coder->l_dongle->last_use = get_time();
 		pthread_mutex_unlock(&coder->l_dongle->mutex);
+		pthread_mutex_lock(&coder->r_dongle->mutex);
 		coder->r_dongle->free = 0;
 		coder->r_dongle->last_use = get_time();
 		pthread_mutex_unlock(&coder->r_dongle->mutex);
 	}
 	else
 	{
+		pthread_mutex_lock(&coder->r_dongle->mutex);
+		coder->r_dongle->free = 0;
 		coder->r_dongle->last_use = get_time();
 		pthread_mutex_unlock(&coder->r_dongle->mutex);
+		pthread_mutex_lock(&coder->l_dongle->mutex);
+		coder->l_dongle->free = 0;
 		coder->l_dongle->last_use = get_time();
+		pthread_mutex_unlock(&coder->l_dongle->mutex);
+	}
+}
+
+void	how_take(t_coders *coder)
+{
+	if (coder->id % 2 == 0)
+	{
+		pthread_mutex_lock(&coder->l_dongle->mutex);
+		coder->l_dongle->free = 1;
+		pthread_mutex_unlock(&coder->l_dongle->mutex);
+		pthread_mutex_lock(&coder->r_dongle->mutex);
+		coder->r_dongle->free = 1;
+		pthread_mutex_unlock(&coder->r_dongle->mutex);
+	}
+	else
+	{
+		pthread_mutex_lock(&coder->r_dongle->mutex);
+		coder->r_dongle->free = 1;
+		pthread_mutex_unlock(&coder->r_dongle->mutex);
+		pthread_mutex_lock(&coder->l_dongle->mutex);
+		coder->l_dongle->free = 1;
 		pthread_mutex_unlock(&coder->l_dongle->mutex);
 	}
 }
