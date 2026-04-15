@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:04 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/15 00:25:52 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/15 03:55:28 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ typedef struct s_env
 	pthread_t		monitor;
 	long			start;
 	int				stop;
+	int				write_stop;
 	int				thread_finish;
+	int				edf;
 }		t_env;
 
 //parsing
@@ -84,7 +86,6 @@ void	stop_simul(t_env *env);
 int		start_threads(t_env *env);
 int		create_threads(t_env *env);
 int		check_end(t_env *env);
-int		check_burnout(t_coders *coder);
 
 //env
 int		init_env(t_env *env);
@@ -101,7 +102,7 @@ void	take_dongle(t_coders *coder);
 void	put_dongle(t_coders *coder);
 int		dongle_left(void *arg);
 int		dongle_right(void *arg);
-int		check_burnout(t_coders *coder);
+int		check_burnout(t_coders *coder, int i);
 
 //debug
 int		debug(void *arg);

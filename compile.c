@@ -6,11 +6,18 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 20:37:50 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/14 01:19:40 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/15 03:50:20 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+static void	finish_compile(t_coders *coder)
+{
+	pthread_mutex_lock(&coder->env->lock);
+	coder->in_compile = 0;
+	pthread_mutex_unlock(&coder->env->lock);
+}
 
 int	check_compile(void *arg)
 {
@@ -40,14 +47,16 @@ int	compile(void *arg)
 	}
 	coder->last_compile = get_time();
 	coder->compile++;
+	if (coder->compile == coder->env->pars.compiles_required)
+		coder->env->thread_finish++;
+	if (coder->env->thread_finish == coder->env->pars.compiles_required)
+		coder->env->write_stop = 1;
 	coder->in_compile = 1;
 	pthread_mutex_unlock(&coder->env->lock);
 	pthread_mutex_lock(&coder->env->write);
 	printf("%ld %d is compiling\n", ft_time(coder->env->start), coder->id);
 	pthread_mutex_unlock(&coder->env->write);
 	usleep(coder->env->pars.to_compile * 1000);
-	pthread_mutex_lock(&coder->env->lock);
-	coder->in_compile = 0;
-	pthread_mutex_unlock(&coder->env->lock);
+	finish_compile(coder);
 	return (0);
 }

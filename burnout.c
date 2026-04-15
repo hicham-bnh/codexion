@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 00:09:45 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/14 01:19:51 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/15 02:44:54 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	burnout(void *arg, int i)
 	pthread_mutex_unlock(&env->write);
 }
 
-int	check_burnout(t_coders *coder)
+int	check_burnout(t_coders *coder, int i)
 {
 	pthread_mutex_lock(&coder->env->lock);
 	if (ft_time(coder->last_compile) > coder->env->pars.to_burnout
@@ -39,6 +39,8 @@ int	check_burnout(t_coders *coder)
 	{
 		coder->env->thread_finish = coder->env->pars.number_coders * 2;
 		pthread_mutex_unlock(&coder->env->lock);
+		stop_simul(coder->env);
+		burnout(coder->env, i);
 		return (1);
 	}
 	pthread_mutex_unlock(&coder->env->lock);

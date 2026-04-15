@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 20:34:25 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/15 00:24:33 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/15 03:52:30 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@ void	*routine(void *arg)
 		usleep(coder->env->pars.to_compile * 1000);
 	while (!check_end(coder->env))
 	{
-		if (check_compile(coder))
-		{
-			add_finish(coder->env);
-			break ;
-		}
 		if (!check_dongles(coder))
 			continue ;
 		take_dongle(coder);
@@ -48,21 +43,19 @@ void	*monitor(void	*arg)
 
 	stop = 0;
 	env = (t_env *)arg;
-	while (!check_compil_end(env))
+	while (!env->stop)
 	{
-		i = 0;
+		i = -1;
 		if (stop)
 			break ;
-		while (i < env->pars.number_coders && !stop)
+		while (++i < env->pars.number_coders && !stop)
 		{
-			if (check_burnout(&env->coders[i]))
+			if (check_burnout(&env->coders[i], i)
+				|| check_compil_end(env) == 1)
 			{
-				stop_simul(env);
-				burnout(env, i);
 				stop = 1;
 				break ;
 			}
-			i++;
 		}
 	}
 	return (NULL);

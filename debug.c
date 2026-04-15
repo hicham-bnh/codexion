@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 22:11:31 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/14 01:19:33 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/15 03:20:18 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	debug(void *arg)
 	}
 	pthread_mutex_unlock(&coder->env->lock);
 	pthread_mutex_lock(&coder->env->write);
-	printf("%ld %d is debugging\n", ft_time(coder->env->start), coder->id);
+	if (!coder->env->write_stop)
+		printf("%ld %d is debugging\n", ft_time(coder->env->start), coder->id);
 	pthread_mutex_unlock(&coder->env->write);
 	usleep(coder->env->pars.to_debug * 1000);
 	return (0);

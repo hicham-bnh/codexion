@@ -6,16 +6,25 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:22:09 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/15 00:28:43 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/15 03:55:40 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+static void	init_params(t_env *env)
+{
+	env->stop = 0;
+	env->thread_finish = 0;
+	env->write_stop = 0;
+	env->edf = 0;
+}
+
 int	init_env(t_env *env)
 {
 	int	i;
 
+	init_params(env);
 	env->coders = malloc(sizeof(t_coders) * env->pars.number_coders);
 	if (!env->coders)
 		return (1);
@@ -36,8 +45,6 @@ int	init_env(t_env *env)
 			return (1);
 		i++;
 	}
-	env->stop = 0;
-	env->thread_finish = 0;
 	return (0);
 }
 
