@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:09:28 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/13 23:45:52 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/15 05:55:43 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,24 @@ static int	check_pars(t_env *env)
 {
 	if (2 > env->pars.number_coders || env->pars.number_coders > 2147483647)
 		return (1);
-	if (0 > env->pars.to_burnout)
-		return (1);
-	if (0 > env->pars.to_compile)
-		return (1);
-	if (0 > env->pars.to_refactor)
-		return (1);
-	if (0 > env->pars.to_debug)
-		return (1);
-	if ((0 > env->pars.compiles_required)
+	if (1 > env->pars.to_burnout)
+		return (2);
+	if (1 > env->pars.to_compile)
+		return (3);
+	if (1 > env->pars.to_refactor)
+		return (4);
+	if (1 > env->pars.to_debug)
+		return (5);
+	if ((1 > env->pars.compiles_required)
 		|| (env->pars.compiles_required > 2147483647))
-		return (1);
-	if (0 > env->pars.dongle_cooldown)
-		return (1);
+		return (6);
+	if (1 > env->pars.dongle_cooldown)
+		return (7);
 	if (!env->pars.shceduler)
-		return (1);
+		return (8);
 	if ((strcmp(env->pars.shceduler, "fifo"))
 		&& (strcmp(env->pars.shceduler, "edf")))
-		return (1);
+		return (8);
 	return (0);
 }
 
