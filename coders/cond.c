@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:00:14 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/16 04:35:06 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/16 05:15:34 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ int	check_dongles(void *arg)
 	else
 	{
 		if (dongle_left_priority(coder)
-			&& dongle_right_priority(coder)
-			&& check_priority(coder->env, coder->id - 1))
+			&& dongle_right_priority(coder))
 		{
 			pthread_mutex_unlock(&coder->env->lock);
 			take_dongle(coder);
@@ -89,6 +88,7 @@ int	dongle_right(void *arg)
 	pthread_mutex_unlock(&coder->r_dongle->mutex);
 	return (1);
 }
+
 int	dongle_left_priority(void *arg)
 {
 	t_coders	*coder;

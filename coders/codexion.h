@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:04 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/16 04:34:26 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/16 05:21:39 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,15 @@ typedef struct s_env
 
 //parsing
 int		pars_input(t_env *env, char **arg);
-int	dongle_left_priority(void *arg);
-int	dongle_right_priority(void *arg);
+
+//edf
+int		dongle_left_priority(void *arg);
+int		dongle_right_priority(void *arg);
 void	priotiy_dongle(t_env *env, int i);
-int	check_priority(t_env *env, int i);
+int		check_priority(t_env *env, int i);
 //time
 long	get_time(void);
 long	ft_time(long start);
-
 
 //threads
 void	*routine(void *arg);
@@ -96,6 +97,7 @@ int		check_end(t_env *env);
 int		init_env(t_env *env);
 int		init_mutex_env(t_env *env);
 int		check_compil_end(t_env *env);
+void	finish(t_env *env);
 
 //compile
 int		check_compile(void *arg);

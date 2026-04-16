@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 00:09:45 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/16 00:04:45 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/16 05:32:16 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ int	check_burnout(t_coders *coder, int i)
 	{
 		coder->env->thread_finish = coder->env->pars.number_coders * 2;
 		pthread_mutex_unlock(&coder->env->lock);
+		pthread_mutex_lock(&coder->env->write);
+		coder->env->write_stop = 1;
+		pthread_mutex_unlock(&coder->env->write);
 		stop_simul(coder->env);
 		burnout(coder->env, i);
 		return (1);

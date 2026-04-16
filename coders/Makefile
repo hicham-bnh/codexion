@@ -1,4 +1,4 @@
-SRC = main.c burnout.c parsing.c env.c threads.c priority.c time.c routine.c refactor.c dongle.c debug.c cond.c compile.c check_end.c
+SRC = main.c burnout.c parsing.c destroy.c env.c threads.c priority.c time.c routine.c refactor.c dongle.c debug.c cond.c compile.c check_end.c
 
 CC = cc
 
