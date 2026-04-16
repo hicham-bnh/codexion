@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:04 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/15 05:55:49 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/16 04:34:26 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_pars
 typedef struct s_dongles
 {
 	int				id;
+	int				priority;
 	pthread_mutex_t	mutex;
 	long			last_use;
 	int				free;
@@ -73,10 +74,14 @@ typedef struct s_env
 
 //parsing
 int		pars_input(t_env *env, char **arg);
-
+int	dongle_left_priority(void *arg);
+int	dongle_right_priority(void *arg);
+void	priotiy_dongle(t_env *env, int i);
+int	check_priority(t_env *env, int i);
 //time
 long	get_time(void);
 long	ft_time(long start);
+
 
 //threads
 void	*routine(void *arg);

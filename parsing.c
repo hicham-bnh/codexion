@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:09:28 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/15 05:55:43 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/16 04:00:56 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int	check_pars(t_env *env)
 	if ((strcmp(env->pars.shceduler, "fifo"))
 		&& (strcmp(env->pars.shceduler, "edf")))
 		return (8);
+	if (!(strcmp(env->pars.shceduler, "edf")))
+		env->edf = 1;
 	return (0);
 }
 

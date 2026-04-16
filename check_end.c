@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 16:53:58 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/15 03:05:55 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/15 23:41:15 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	check_end(t_env *env)
 {
 	pthread_mutex_lock(&env->lock);
-	if (env->stop)
+	if (env->stop == 1)
 	{
 		pthread_mutex_unlock(&env->lock);
 		return (1);
@@ -34,7 +34,7 @@ void	add_finish(t_env *env)
 int	check_compil_end(t_env *env)
 {
 	pthread_mutex_lock(&env->lock);
-	if (env->thread_finish == env->pars.compiles_required)
+	if (env->thread_finish == env->pars.number_coders)
 	{
 		pthread_mutex_unlock(&env->lock);
 		stop_simul(env);

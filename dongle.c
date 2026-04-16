@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:51:07 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/15 03:53:45 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/16 04:27:36 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,6 @@
 void	take_dongle(t_coders *coder)
 {
 	how_take(coder);
-	if (check_end(coder->env))
-	{
-		pthread_mutex_unlock(&coder->l_dongle->mutex);
-		pthread_mutex_unlock(&coder->r_dongle->mutex);
-		return ;
-	}
 	pthread_mutex_lock(&coder->env->write);
 	if (!coder->env->write_stop)
 	{

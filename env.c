@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:22:09 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/15 03:55:40 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/16 04:00:10 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	init_params(t_env *env)
 	env->stop = 0;
 	env->thread_finish = 0;
 	env->write_stop = 0;
-	env->edf = 0;
 }
 
 int	init_env(t_env *env)
@@ -41,6 +40,7 @@ int	init_env(t_env *env)
 		env->coders[i].in_compile = 0;
 		env->dongles[i].free = 0;
 		env->dongles[i].last_use = 0;
+		env->dongles[i].priority = 0;
 		if (pthread_mutex_init(&env->dongles[i].mutex, NULL))
 			return (1);
 		i++;
