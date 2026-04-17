@@ -1,14 +1,14 @@
-SRC = main.c burnout.c parsing.c destroy.c env.c threads.c priority.c time.c routine.c refactor.c dongle.c debug.c cond.c compile.c check_end.c
+SRC_DIR := src
+BUILD_DIR := .build
 
-CC = cc
-
-CFLAGS = -Wall -Werror -Wextra -pthread  -I.
+BASE_NAME := main error burnout parsing destroy env threads priority time routine refactor dongle debug cond compile check_end
+SRC := $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(BASE_NAME)))
+OBJ := $(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(BASE_NAME)))
+DEP := $(addprefix $(BUILD_DIR)/, $(addsuffix .d, $(BASE_NAME)))
+CFLAGS = -Wall -Werror -Wextra -pthread -I.
 #-fsanitize=thread
-DEP = $(OBJ:.o=.d)
 
 NAME = codexion
-
-OBJ = $(SRC:.c=.o)
 
 .PHONY: all re clean fclean
 
@@ -17,11 +17,11 @@ all: $(NAME)
 $(NAME): $(OBJ)
 		$(CC) $(CFLAGS) -o $@ $^
 
-%.o:%.c
-		$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
+		$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(BUILD_DIR)/$*.d
 
 clean:
-		rm -rf $(OBJ) $(DEP)
+		rm -rf $(BUILD_DIR)
 
 fclean: clean
 		rm -rf $(NAME)
@@ -30,5 +30,8 @@ re: fclean all
 
 debug: fclean
 	$(MAKE) CFLAGS=" -Wall -Werror -Wextra -pthread -fsanitize=thread -I."
+
+$(BUILD_DIR):
+	mkdir $(BUILD_DIR)
 
 -include $(DEP)

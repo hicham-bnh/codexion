@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:00:14 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/16 05:15:34 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/17 00:47:26 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	dongle_left(void *arg)
 	t_coders	*coder;
 
 	coder = (t_coders *)arg;
+	if (coder->env->pars.number_coders == 1)
+		return (0);
 	pthread_mutex_lock(&coder->l_dongle->mutex);
 	if (coder->l_dongle->free == 1)
 	{
@@ -70,6 +72,8 @@ int	dongle_right(void *arg)
 	t_coders	*coder;
 
 	coder = (t_coders *)arg;
+	if (coder->env->pars.number_coders == 1)
+		return (0);
 	pthread_mutex_lock(&coder->r_dongle->mutex);
 	if (coder->r_dongle->free == 1)
 	{
@@ -94,8 +98,10 @@ int	dongle_left_priority(void *arg)
 	t_coders	*coder;
 
 	coder = (t_coders *)arg;
+	if (coder->env->pars.number_coders == 1)
+		return (0);
 	pthread_mutex_lock(&coder->l_dongle->mutex);
-	if (coder->l_dongle->free == 1)
+	if (coder->l_dongle->free == 1 || check_priority(coder->env, coder->id - 1))
 	{
 		pthread_mutex_unlock(&coder->l_dongle->mutex);
 		return (0);
@@ -118,8 +124,10 @@ int	dongle_right_priority(void *arg)
 	t_coders	*coder;
 
 	coder = (t_coders *)arg;
+	if (coder->env->pars.number_coders == 1)
+		return (0);
 	pthread_mutex_lock(&coder->r_dongle->mutex);
-	if (coder->r_dongle->free == 1)
+	if (coder->r_dongle->free == 1 || check_priority(coder->env, coder->id - 1))
 	{
 		pthread_mutex_unlock(&coder->r_dongle->mutex);
 		return (0);

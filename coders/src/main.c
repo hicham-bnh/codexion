@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:08 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/16 05:21:54 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/16 21:50:26 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,16 @@ int	main(int ac, char **av)
 	memset(&env, 0, sizeof(t_env));
 	if (ac != 9 || pars_input(&env, av))
 	{
-		printf("ERROR\n");
+		print_error();
 		return (1);
 	}
-	if (init_env(&env))
+	if (init_env(&env) || init_mutex_env(&env))
+	{
+		finish(&env);
 		return (1);
-	if (init_mutex_env(&env))
-		return (1);
-	if (create_threads(&env))
-		return (1);
-	if (start_threads(&env))
-		return (1);
+	}
+	create_threads(&env);
+	start_threads(&env);
 	finish(&env);
 	return (0);
 }

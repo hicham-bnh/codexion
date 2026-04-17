@@ -6,15 +6,29 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:09:28 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/16 04:00:56 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/16 22:53:17 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+static int	ft_isdigit(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 static int	check_pars(t_env *env)
 {
-	if (2 > env->pars.number_coders || env->pars.number_coders > 2147483647)
+	if (1 > env->pars.number_coders || env->pars.number_coders > 2100000000)
 		return (1);
 	if (1 > env->pars.to_burnout)
 		return (2);
@@ -39,6 +53,25 @@ static int	check_pars(t_env *env)
 	return (0);
 }
 
+static int	check_digit(char **arg)
+{
+	if (ft_isdigit(arg[1]))
+		return (1);
+	if (ft_isdigit(arg[2]))
+		return (1);
+	if (ft_isdigit(arg[3]))
+		return (1);
+	if (ft_isdigit(arg[4]))
+		return (1);
+	if (ft_isdigit(arg[5]))
+		return (1);
+	if (ft_isdigit(arg[6]))
+		return (1);
+	if (ft_isdigit(arg[7]))
+		return (1);
+	return (0);
+}
+
 int	pars_input(t_env *env, char **arg)
 {
 	env->pars.number_coders = atoi(arg[1]);
@@ -49,7 +82,7 @@ int	pars_input(t_env *env, char **arg)
 	env->pars.compiles_required = atoi(arg[6]);
 	env->pars.dongle_cooldown = atoi(arg[7]);
 	env->pars.shceduler = arg[8];
-	if (check_pars(env))
+	if (check_pars(env) || check_digit(arg))
 	{
 		return (1);
 	}

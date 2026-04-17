@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 20:34:25 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/16 05:15:12 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/17 00:45:22 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	*monitor(void	*arg)
 			break ;
 		while (++i < env->pars.number_coders && !stop)
 		{
-			priotiy_dongle(env, i);
+			if (env->edf)
+				priotiy_dongle(env, i);
 			if (check_burnout(&env->coders[i], i)
 				|| check_compil_end(env) == 1)
 			{

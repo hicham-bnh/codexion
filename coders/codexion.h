@@ -6,7 +6,7 @@
 /*   By: mobenhab <mobenhab@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:04:04 by mobenhab          #+#    #+#             */
-/*   Updated: 2026/04/16 05:21:39 by mobenhab         ###   ########.fr       */
+/*   Updated: 2026/04/16 23:54:43 by mobenhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_env
 	t_pars			pars;
 	pthread_mutex_t	lock;
 	pthread_mutex_t	write;
+	pthread_mutex_t	time_mutex;
 	pthread_t		monitor;
 	long			start;
 	int				stop;
@@ -74,12 +75,14 @@ typedef struct s_env
 
 //parsing
 int		pars_input(t_env *env, char **arg);
+void	print_error(void);
 
 //edf
 int		dongle_left_priority(void *arg);
 int		dongle_right_priority(void *arg);
 void	priotiy_dongle(t_env *env, int i);
 int		check_priority(t_env *env, int i);
+
 //time
 long	get_time(void);
 long	ft_time(long start);
@@ -109,7 +112,6 @@ void	take_dongle(t_coders *coder);
 void	put_dongle(t_coders *coder);
 int		dongle_left(void *arg);
 int		dongle_right(void *arg);
-int		check_burnout(t_coders *coder, int i);
 
 //debug
 int		debug(void *arg);
@@ -120,5 +122,6 @@ int		refctor(void *arg);
 //burnout
 void	burnout(void *arg, int i);
 void	how_take(t_coders *coder);
+int		check_burnout(t_coders *coder, int i);
 
 #endif
