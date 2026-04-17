@@ -6,7 +6,6 @@
 
 ## Description
 
-##hicham
 
 **Codexion** is a concurrent programming project from the 42 curriculum. It simulates a resource-sharing problem between **coders** competing to acquire **dongles** (shared hardware licenses) in order to work — all while a **monitor** thread watches over them, enforcing rules and detecting burnout or starvation.
 
