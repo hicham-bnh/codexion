@@ -41,7 +41,7 @@ static int	check_pars(t_env *env)
 	if ((1 > env->pars.compiles_required)
 		|| (env->pars.compiles_required > 2147483647))
 		return (6);
-	if (1 > env->pars.dongle_cooldown)
+	if (0 > env->pars.dongle_cooldown)
 		return (7);
 	if (!env->pars.shceduler)
 		return (8);
